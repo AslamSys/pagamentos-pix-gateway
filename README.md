@@ -1,5 +1,18 @@
 # 💸 PIX Gateway
 
+## 🔗 Navegação
+
+**[🏠 AslamSys](https://github.com/AslamSys)** → **[📚 _system](https://github.com/AslamSys/_system)** → **[📂 Pagamentos (RPi 5 4GB)](https://github.com/AslamSys/_system/blob/main/hardware/pagamentos/README.md)** → **pagamentos-pix-gateway**
+
+### Containers Relacionados (pagamentos)
+- [pagamentos-brain](https://github.com/AslamSys/pagamentos-brain)
+- [pagamentos-open-banking](https://github.com/AslamSys/pagamentos-open-banking)
+- [pagamentos-fraud-detector](https://github.com/AslamSys/pagamentos-fraud-detector)
+- [pagamentos-invoice-generator](https://github.com/AslamSys/pagamentos-invoice-generator)
+- [pagamentos-wallet-integrator](https://github.com/AslamSys/pagamentos-wallet-integrator)
+
+---
+
 **Container:** `pix-gateway`  
 **Stack:** Node.js + API Bacen  
 **PSPs:** BB, Inter, Asaas, Mercado Pago
