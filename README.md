@@ -160,3 +160,25 @@ Inter:
 - ✅ Asaas integration
 - ✅ PIX send/receive
 - ✅ Webhooks
+
+---
+
+## 🔐 Vault Integration
+
+A `ASAAS_API_KEY` (e demais chaves de PSP) **não ficam em env var de produção** — são obtidas do `mordomo-vault` mediante autorização por voz.
+
+```yaml
+Credenciais gerenciadas pelo vault:
+  - asaas_api_key
+  - bb_cert
+  - inter_api_key
+
+Auth mode: voice
+Pessoa autorizada: owner
+Confiança mínima: 0.95
+Módulo consumidor: mordomo-financas-pix
+```
+
+**Fluxo:** O `mordomo-orchestrator` só despacha a ação de PIX após receber a API key do vault, confirmando que foi o dono da casa quem pediu com confiança ≥ 0.95.
+
+Veja: [mordomo-vault](https://github.com/AslamSys/mordomo-vault)
