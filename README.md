@@ -1,21 +1,17 @@
-# 💸 PIX Gateway
+# 💸 Finanças — PIX
 
 ## 🔗 Navegação
 
-**[🏠 AslamSys](https://github.com/AslamSys)** → **[📚 _system](https://github.com/AslamSys/_system)** → **[📂 Pagamentos (RPi 5 4GB)](https://github.com/AslamSys/_system/blob/main/hardware/pagamentos/README.md)** → **pagamentos-pix-gateway**
+**[🏠 AslamSys](https://github.com/AslamSys)** → **[📚 _system](https://github.com/AslamSys/_system)** → **financas-pix**
 
-### Containers Relacionados (pagamentos)
-- [pagamentos-brain](https://github.com/AslamSys/pagamentos-brain)
-- [pagamentos-open-banking](https://github.com/AslamSys/pagamentos-open-banking)
-- [pagamentos-fraud-detector](https://github.com/AslamSys/pagamentos-fraud-detector)
-- [pagamentos-invoice-generator](https://github.com/AslamSys/pagamentos-invoice-generator)
-- [pagamentos-wallet-integrator](https://github.com/AslamSys/pagamentos-wallet-integrator)
+### Containers Relacionados (finanças)
+- [financas-contas](https://github.com/AslamSys/financas-contas)
 
 ---
 
-**Container:** `pix-gateway`  
+**Container:** `financas-pix`  
 **Stack:** Node.js + API Bacen  
-**PSPs:** BB, Inter, Asaas, Mercado Pago
+**PSPs:** BB, Inter, Asaas
 
 ---
 
@@ -39,7 +35,7 @@ Gateway de integração com PSPs (Payment Service Providers) para envio e recebi
 
 ### Subscribe
 ```javascript
-Topic: "pagamentos.pix.send"
+Topic: "financas.pix.send"
 Payload: {
   "pix_key": "+5511999998888",
   "amount": 150.00,
@@ -49,14 +45,14 @@ Payload: {
 
 ### Publish
 ```javascript
-Topic: "pagamentos.pix.sent"
+Topic: "financas.pix.sent"
 Payload: {
   "txid": "E123456789202511271530",
   "status": "success",
   "amount": 150.00
 }
 
-Topic: "pagamentos.pix.received"
+Topic: "financas.pix.received"
 Payload: {
   "txid": "E987654321202511271600",
   "payer": "Maria Silva",
@@ -97,7 +93,7 @@ const nc = await connect({ servers: process.env.NATS_URL });
 const sc = StringCodec();
 
 // Subscribe to send PIX
-const sub = nc.subscribe('pagamentos.pix.send');
+const sub = nc.subscribe('financas.pix.send');
 for await (const msg of sub) {
     const { pix_key, amount, description } = JSON.parse(sc.decode(msg.data));
     
@@ -112,7 +108,7 @@ for await (const msg of sub) {
     });
     
     // Publish confirmation
-    nc.publish('pagamentos.pix.sent', sc.encode(JSON.stringify({
+    nc.publish('financas.pix.sent', sc.encode(JSON.stringify({
         txid: response.data.id,
         status: 'success',
         amount
@@ -124,7 +120,7 @@ app.post('/webhooks/pix', (req, res) => {
     const { event, payment } = req.body;
     
     if (event === 'PAYMENT_RECEIVED') {
-        nc.publish('pagamentos.pix.received', sc.encode(JSON.stringify({
+        nc.publish('financas.pix.received', sc.encode(JSON.stringify({
             txid: payment.id,
             payer: payment.customer.name,
             amount: payment.value
